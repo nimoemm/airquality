@@ -109,7 +109,6 @@ router.get('/update', (req, res, next) => {
     }).exec((err, result) => {
       if (err) debug(err);
       debug(result);
-      return res.json(result)
     });
     return res.status(204).end();
   });

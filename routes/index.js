@@ -2,8 +2,12 @@ var express = require('express');
 var router = express.Router();
 let i = 20000;
 const moment = require('moment');
-const { connect } = require('mqtt');
-const { mqtt } = require('../config/env');
+const {
+  connect
+} = require('mqtt');
+const {
+  mqtt
+} = require('../config/env');
 const client = connect(
   mqtt.url,
   mqtt.options
@@ -20,15 +24,21 @@ client.once('connect', () => {
 });
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/', function (req, res, next) {
+  res.render('index', {
+    title: 'Express'
+  });
 });
-router.get('/ping', function(req, res, next) {
+router.get('/ping', function (req, res, next) {
   res.send('PONG');
 });
 
 router.get('/chartdata', (req, res) => {
-  Sensor.findOne({}, { logs: { $slice: -10 } }).exec((err, logs) => {
+  Sensor.findOne({}, {
+    logs: {
+      $slice: -10
+    }
+  }).exec((err, logs) => {
     if (err) return res.send(err);
     var chart = {
       chart: {
@@ -63,16 +73,15 @@ router.get('/chartdata', (req, res) => {
 });
 
 
-router.get('/logs', function(req, res, next) {
-  res.render('table', { title: 'Raw Data' });
+router.get('/logs', function (req, res, next) {
+  res.render('table', {
+    title: 'Raw Data'
+  });
 });
-router.get('/tabledata', function(req, res) {
-  Sensor.findOne(
-    {},
-    {
-      logs: 1
-    }
-  ).exec((err, result) => {
+router.get('/tabledata', function (req, res) {
+  Sensor.findOne({}, {
+    logs: 1
+  }).exec((err, result) => {
     if (err) return debug(err);
     res.json(result);
   });
@@ -86,32 +95,32 @@ router.get('/update', (req, res, next) => {
       debug(err);
       return res.status(500).send(err.message);
     }
-    Sensor.findOneAndUpdate(
-      { ser_no: req.query.ser_no },
-      {
-        $addToSet: {
-          logs: {
-            //humidity: req.query.humidity,
-            concentration: req.query.conc,
-            temperature: req.query.temperature,
-            time_stamp: query.time_stamp
-          }
+    Sensor.findOneAndUpdate({
+      ser_no: req.query.channel
+    }, {
+      $addToSet: {
+        logs: {
+          //humidity: req.query.humidity,
+          concentration: req.query.conc,
+          temperature: req.query.temperature,
+          time_stamp: query.time_stamp
         }
       }
-    ).exec((err, result) => {
+    }).exec((err, result) => {
       if (err) debug(err);
       debug(result);
+      return res.json(result)
     });
     return res.status(204).end();
   });
 });
 
-router.post('/create-sensor', function(req, res, next) {
+router.post('/create-sensor', function (req, res, next) {
   // res.render('table', { title: 'Raw Data' });
   var newSensor = new Sensor(req.body);
-  newSensor.save((err, result)=>{
-  if(err) return debug(err);
-  res.json(result)
+  newSensor.save((err, result) => {
+    if (err) return debug(err);
+    res.json(result)
   })
 });
 

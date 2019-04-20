@@ -61,6 +61,8 @@ router.get('/chartdata', (req, res) => {
     // res.json(logs);
   });
 });
+
+
 router.get('/logs', function(req, res, next) {
   res.render('table', { title: 'Raw Data' });
 });
@@ -103,6 +105,16 @@ router.get('/update', (req, res, next) => {
     return res.status(204).end();
   });
 });
+
+router.post('/create-sensor', function(req, res, next) {
+  // res.render('table', { title: 'Raw Data' });
+  var newSensor = new Sensor(req.body);
+  newSensor.save((err, result)=>{
+  if(err) return debug(err);
+  res.json(result)
+  })
+});
+
 
 router.get('/stream', (req, res) => {
   req.socket.setTimeout(Number.MAX_SAFE_INTEGER);

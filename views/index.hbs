@@ -35,7 +35,7 @@
               <h5 class="card-title">Gas Concentration</h5>
               <h6 class="card-subtitle mb-2 text-muted">LPG<small>ppm</small></h6>
               <p class="card-text text-center" id="gas-conc" style="font-size:50px">
-                20
+                {{#if result.concentration}}{{result.concentration}}{{else}}--{{/if}}
               </p>
 
               <small class="float-right">time: <span class="t_stamp">13:32 UTC</span></small>
@@ -47,10 +47,11 @@
               <h5 class="card-title">Temperature</h5>
               <h6 class="card-subtitle mb-2 text-muted"><sup>o</sup>C</h6>
               <p class="card-text text-center" id="temperature" style="font-size: 50px">
-                -- --
+                {{#if result.temperature}}{{result.temperature}}{{else}}--{{/if}}
               </p>
 
-              <small class="float-right">time: <span class="t_stamp">13:32 UTC</span></small>
+              <small class="float-right">time: <span class="t_stamp">{{#if
+                  result.time_stamp}}{{result.time_stamp}}{{else}}--{{/if}}</span></small>
             </div>
           </div>
           <br>
